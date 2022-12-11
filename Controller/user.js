@@ -83,7 +83,7 @@ async function login(req,res){
         }
 
         // generate JWT token
-        var token = jwt.sign({ value: email}, process.env.SECRET_KEY);
+        var token = jwt.sign({ value: user._id}, process.env.SECRET_KEY);
 
         return res.status(200).json({
             success: true,

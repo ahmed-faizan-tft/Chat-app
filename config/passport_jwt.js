@@ -13,7 +13,7 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
 
     console.log(jwt_payload);
 
-    User.findOne({email: jwt_payload.value}, function(err, user) {
+    User.findById(jwt_payload.value, function(err, user) {
         if (err) {
             return done(err, false);
         }

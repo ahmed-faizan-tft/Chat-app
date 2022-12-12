@@ -12,6 +12,7 @@ const session = require('express-session');
 const passport = require('passport');
 const port = process.env.PORT || 8080
 const cookieParser = require('cookie-parser')
+const MongoStore = require('connect-mongo');
 
 
 // create express app
@@ -36,6 +37,13 @@ app.use(session({
         secure: false,
         path:'/'
     },
+    store: MongoStore.create({
+         mongoUrl: `${process.env.DB_URL}/${process.env.DBNAME}`
+    },
+    function(err){
+        console.log(err || 'connect-mongodb setup ok');
+    }
+    )
 }));
 
 

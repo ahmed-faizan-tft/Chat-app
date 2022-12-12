@@ -4,6 +4,24 @@ const User = require('../Model/user.js')
 const crypto = require('crypto')
 
 
+passport.serializeUser(function(user,done){
+    console.log('serializeUser')
+    done(null,user.id)
+});
+
+
+passport.deserializeUser(function(id,done){
+    console.log('deserialize');
+    User.findById(id,function(err,user){
+        if(err){
+            console.log('Error in finding user ----> passport');
+            return done(err);
+        }
+        return done(null,user);
+    })
+});
+
+
 passport.use(new GoogleStrategy({
     clientID:     process.env.GOOGLE_CLIEN_ID,
     clientSecret: process.env.GOOGLE_SECRET_KEY,

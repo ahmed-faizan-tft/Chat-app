@@ -4,7 +4,7 @@ const User = require('../Model/user.js');
 checkAuthenticated = async (req, res, next) => {
     try {
         
-        if(req.headers.authorization){
+        if(req.headers && req.headers.authorization){
             var decoded = await jwt.verify(req.headers.authorization.split(' ')[1], process.env.SECRET_KEY);
             const user = await User.findById(decoded.value).select({_id:1, username:1, email:1})
             if(user){

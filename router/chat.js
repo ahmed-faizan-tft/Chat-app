@@ -9,7 +9,6 @@ const { checkAuthenticated } = require('../middlewares/userAuthenticate.js')
 
 router.post('/add',checkAuthenticated,addMessage);
 router.get('/get',checkAuthenticated,getChat)
-// router.get('/getByGoogle',checkAuthenticated, getChat)
 
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const {create_user_schema_validation, login_schema_validation} = require('../utils/validation/userValidation')
+const {password_schema_validation} = require('../utils/validation/passwordValidation.js')
 const bcrypt = require('bcrypt');
 const User = require('../Model/user.js');
 var jwt = require('jsonwebtoken');
@@ -128,8 +129,72 @@ async function getUser(req,res){
     }
 }
 
+async function resetPassword(req, res){
+    try {
+        const {id, password, confirmPassword} = req.body;
+         
+        await password_schema_validation.validateAsync(req.body);
+
+        let user = await User.findById(id);
+
+        if(user){
+            // encrypt the password
+            const encriptedPassword = await bcrypt.hash(password, 10);
+            user.password = encriptedPassword;
+            user.save();
+        }else{
+            let errorObj = new Error('You have to regster first')
+            errorObj.name = 'NotRegistered';
+            throw errorObj
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Password has been reset"
+        })
+    } catch (error) {
+
+        if(error.name === 'ValidationError'){
+            res.status(400).json({
+                success: false,
+                message: error.details[0].message
+            })
+            return
+        }
+
+        if(error.name === 'NotRegistered'){
+            res.status(400).json({
+                success: false,
+                message: error.message
+            })
+            return
+        }
+
+        return res.status(500).json({
+            success:false,
+            message: "Error in reset password"
+        })
+    }
+}
+
+
+
+
+async function uploadFile(req,res){
+    try {
+        console.log('file details',req.file)
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message: "Error upload file"
+        })
+    }
+}
+
 module.exports = {
     createUser,
     login,
-    getUser
+    getUser,
+    resetPassword,
+    uploadFile
 }

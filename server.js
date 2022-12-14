@@ -26,21 +26,21 @@ app.use(express.json());
 
 
 app.use(cookieParser());
-app.use(session({
-    name:'gchatid',
-    secret: '44w52fw2r2re55r62wf6',  // by using this secret encryption and decryption is done
-    saveUninitialized: false, // if user have not logged in so no need to store any data
-    resave: false,            
-    cookie:{
-        maxAge: (1000 * 60 * 100),
-        secure: false,
-        path:'/'
-    },
-}));
+// app.use(session({
+//     name:'gchatid',
+//     secret: '44w52fw2r2re55r62wf6',  // by using this secret encryption and decryption is done
+//     saveUninitialized: false, // if user have not logged in so no need to store any data
+//     resave: false,            
+//     cookie:{
+//         maxAge: (1000 * 60 * 100),
+//         secure: false,
+//         path:'/'
+//     },
+// }));
 
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 
 // endpoints

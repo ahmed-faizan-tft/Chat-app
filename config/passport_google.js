@@ -13,13 +13,13 @@ passport.use(new GoogleStrategy({
     User.findOne({email: profile.emails[0].value }, function (err, user) {
         if(err){console.log("Error in google strategy passport",err); return}
         if(user){
+            user.isExist = true;
             return done(null,user);
         }else{
             // if user not in database just create
             User.create({
                 username:profile.displayName,
                 email:profile.emails[0].value,
-                password:crypto.randomBytes(20).toString('hex')
             },function(err,user){
                 if(err){console.log("Error in google strategy passport",err); return}
                 

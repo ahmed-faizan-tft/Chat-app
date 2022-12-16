@@ -18,6 +18,12 @@ const userSchema = mongoose.Schema({
         require: true,
         trim:true
     },
+    files:[
+        {
+            type: String,
+            trim:true
+        }
+    ]
 
 });
 

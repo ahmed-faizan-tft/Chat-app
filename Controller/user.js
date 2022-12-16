@@ -3,7 +3,7 @@ const {password_schema_validation} = require('../utils/validation/passwordValida
 const bcrypt = require('bcrypt');
 const User = require('../Model/user.js');
 var jwt = require('jsonwebtoken');
-
+const Chat = require('../Model/chat.js');
 
 
 async function createUser(req,res){
@@ -182,8 +182,45 @@ async function resetPassword(req, res){
 
 async function uploadFile(req,res){
     try {
-        console.log('file details',req.file)
+        console.log('req.body ',req.body)
+        let user = await User.findById(req.user.id).select({password:0});
+
+        if(!user){
+            let errorObj = new Error('You are unauthorized user')
+            errorObj.name = 'unauthorized';
+            throw errorObj
+        }
+        if(req.file){
+            user.files.push(`/uploadsFile/${req.file.filename}`);
+            user.save();
+
+            let chat = await Chat.create({
+                message:`/uploadsFile/${req.file.filename}`,
+                sender: req.body.sender,
+                receiver: req.body.receiver
+            })
+            return res.status(200).json({
+                success: true,
+                data: chat,
+                message: "Your file uploaded"
+            })
+        }
+
+        return res.status(400).json({
+            success: false,
+            message: "Upload file"
+        })
+        
     } catch (error) {
+
+        if(error.name === 'unauthorized'){
+            res.status(401).json({
+                success: false,
+                message: error.message
+            })
+            return
+        }
+
         return res.status(500).json({
             success:false,
             message: "Error upload file"

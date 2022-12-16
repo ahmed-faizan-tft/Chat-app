@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const {createUser,getUser, login, resetPassword} = require('../Controller/user')
+const {createUser,getUser, login, resetPassword,uploadFile} = require('../Controller/user')
 const passport = require('passport')
-
 const { checkAuthenticated } = require('../middlewares/userAuthenticate.js')
+const {upload} = require('../config/fileUpload.js')
 
 
 router.post('/create',createUser);
 router.post('/login',login);
 router.get('/get',checkAuthenticated,getUser)
 router.post('/reset', resetPassword);
+router.post('/file', checkAuthenticated,upload.single('file'),uploadFile)
 
 // google authenticate
 router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));

@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const User = require('../Model/user.js');
 var jwt = require('jsonwebtoken');
 const Chat = require('../Model/chat.js');
+const downloadFileQueue = require('../config/queue.js');
+const workers = require('../utils/workers/worker.js')
 
 
 async function createUser(req,res){
@@ -228,10 +230,34 @@ async function uploadFile(req,res){
     }
 }
 
+async function downloadFile(req,res){
+    try {
+        let userFiles = await User.findById(req.user.id).select({files:1});
+        const filePath = userFiles.files[userFiles.files.length-1];
+        let userData = {
+            id: req.user.id,
+            username: req.user.username,
+            email: req.user.email,
+            filePath
+        }
+        res.status(200).send('ok');
+
+        // add jobs to queue
+        const job = await downloadFileQueue.add(userData);
+
+        // handle each job
+        workers();
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     createUser,
     login,
     getUser,
     resetPassword,
-    uploadFile
+    uploadFile,
+    downloadFile
 }

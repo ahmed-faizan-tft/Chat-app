@@ -18,6 +18,14 @@ const chatSchema = mongoose.Schema({
         require: true,
         trim:true
     },
+    
+    isFile: {
+        type: Boolean,
+        require: true,
+        trim:true,
+        default: false
+    },
+
     time: {
         type: String,
         default: new Date().toLocaleString('en-us',{hour:'numeric',minute:'numeric', hour12:true}),

@@ -12,6 +12,8 @@ const session = require('express-session');
 const passport = require('passport');
 const port = process.env.PORT || 8080
 const cookieParser = require('cookie-parser')
+global.socketInstance = null;
+const workers = require('./utils/workers/worker')
 
 
 // create express app
@@ -46,7 +48,8 @@ app.use(cookieParser());
 // endpoints
 app.use('/',require('./router'))
 
-
+//execute queue's job
+workers();
 
 
 

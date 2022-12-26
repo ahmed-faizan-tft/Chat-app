@@ -9,11 +9,11 @@ const schema_validation = require('../utils/validation/chatValidation.js')
         // check validation of incoming data
         await schema_validation.validateAsync(req.body)
 
-        const {_id, message, sender,receiver, time} = await Chat.create(req.body);
+        const {_id, message, sender,receiver, time, isFile} = await Chat.create(req.body);
 
         return res.status(200).json({
             success: true,
-            message: {_id, message, sender,receiver, time}
+            message: {_id, message, sender,receiver, time, isFile}
         });
         
         
@@ -33,7 +33,7 @@ const schema_validation = require('../utils/validation/chatValidation.js')
  // fetch all chats
  async function getChat(req,res){
     try {
-        const chatData = await Chat.find({}).select({_id:1, message:1, sender:1, receiver: 1, time:1});
+        const chatData = await Chat.find({}).select({_id:1, message:1, sender:1, receiver: 1, time:1, isFile:1});
         return res.status(200).json({
             success: true,
             message: chatData

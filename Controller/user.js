@@ -199,7 +199,8 @@ async function uploadFile(req,res){
             let chat = await Chat.create({
                 message:`/uploadsFile/${req.file.filename}`,
                 sender: req.body.sender,
-                receiver: req.body.receiver
+                receiver: req.body.receiver,
+                isFile: true
             })
             return res.status(200).json({
                 success: true,
@@ -232,21 +233,14 @@ async function uploadFile(req,res){
 
 async function downloadFile(req,res){
     try {
-        let userFiles = await User.findById(req.user.id).select({files:1});
-        const filePath = userFiles.files[userFiles.files.length-1];
-        let userData = {
-            id: req.user.id,
-            username: req.user.username,
-            email: req.user.email,
-            filePath
-        }
+        
         res.status(200).send('ok');
 
         // add jobs to queue
-        const job = await downloadFileQueue.add(userData);
+        const job = await downloadFileQueue.add({id: req.user.id});
 
         // handle each job
-        workers();
+        // workers();
         
     } catch (error) {
         console.log(error);

@@ -1,11 +1,29 @@
 const downloadFileQueue = require('../../config/queue.js');
-const http = require('http');
+const path = require('path')
+
 const fs = require('fs');
+const User = require('../../Model/user');
+
 
 function workers(){
     try {
         downloadFileQueue.process(async (job,done)=>{
-            console.log(`${job.id} ---> `,job.data);
+
+            let userFiles = await User.findById(job.data.id,{files:1});
+            const filePath = userFiles.files[userFiles.files.length-1];
+
+            fs.readFile(`${path.dirname(__filename)}/../..${filePath}`, function(err,data){
+                if(err){
+                    console.log(err);
+                    return;
+                }
+                
+                console.log('socketInstance',socketInstance.id);
+                socketInstance.emit('downloadFile',data)
+            })
+
+            console.log(`${job.id} ---> `,job.data );
+            done()
         })
     } catch (error) {
         console.log('Error in workers ',error)

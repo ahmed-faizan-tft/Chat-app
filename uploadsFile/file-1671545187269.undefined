@@ -1,0 +1,6 @@
+A given queue, always referred by its instantiation name ( my-first-queue in the example above ), can have many producers, many consumers, and many listeners.
+An important aspect is that producers can add jobs to a queue even if there are no consumers available at that moment:
+you can have one or more workers consuming jobs from the queue, which will consume the jobs in a given order: FIFO (the default), LIFO or according to priorities.
+Talking about workers, they can run in the same or different processes, in the same machine 
+The process function will be called every time the worker is idling and there are jobs to process in the queue. 
+If your Node runtime does not support async/await, then you can just return a promise at the end of the process function for a similar result.

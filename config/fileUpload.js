@@ -5,7 +5,6 @@ const Base_URL = `${path.dirname(__filename)}/..`
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        console.log('destination',file);
       cb(null, `${Base_URL}/uploadsFile`)
     },
     filename: function (req, file, cb) {

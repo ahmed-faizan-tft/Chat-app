@@ -17,12 +17,8 @@ function workers(){
                     console.log(err);
                     return;
                 }
-                
-                console.log('socketInstance',socketInstance.id);
                 socketInstance.emit('downloadFile',data)
             })
-
-            console.log(`${job.id} ---> `,job.data );
             done()
         })
     } catch (error) {

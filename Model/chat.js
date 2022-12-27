@@ -26,11 +26,13 @@ const chatSchema = mongoose.Schema({
         default: false
     },
 
-    time: {
-        type: String,
-        default: new Date().toLocaleString('en-us',{hour:'numeric',minute:'numeric', hour12:true}),
-    }
-});
+    // time: {
+    //     type: String,
+    //     default: new Date().toLocaleString('en-us',{hour:'numeric',minute:'numeric', hour12:true}),
+    // }
+},
+ { timestamps: true }
+);
 
 const Chat = mongoose.model('chat', chatSchema);
 

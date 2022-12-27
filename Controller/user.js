@@ -184,7 +184,6 @@ async function resetPassword(req, res){
 
 async function uploadFile(req,res){
     try {
-        console.log('req.body ',req.body)
         let user = await User.findById(req.user.id).select({password:0});
 
         if(!user){

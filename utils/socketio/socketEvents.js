@@ -1,21 +1,15 @@
-const workers = require('../workers/worker')
-
 function connection(io){
     io.on('connection', (socket)=>{
         // workers(socket);
         
-        socket.on('set_socket',(data)=>{
-            socketInstance = socket;
-        })
+        // socket.on('set_socket',(data)=>{
+        //     socketInstance = socket;
+        // })
         socket.on('send_message',(data)=>{
             socket.broadcast.emit('receive_message',data);
         })
     });
-
-
 }
-
-
 
 
 

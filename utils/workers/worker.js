@@ -17,7 +17,7 @@ function workers(){
                     console.log(err);
                     return;
                 }
-                socketInstance.emit('downloadFile',data)
+                socketInstance.to(job.data.socketId).emit('downloadFile',data)
             })
             done()
         })

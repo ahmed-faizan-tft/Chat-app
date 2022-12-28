@@ -236,7 +236,7 @@ async function downloadFile(req,res){
         res.status(200).send('ok');
 
         // add jobs to queue
-        const job = await downloadFileQueue.add({id: req.user.id});
+        const job = await downloadFileQueue.add({id: req.user.id, socketId: req.params.socketId});
 
         // handle each job
         // workers();

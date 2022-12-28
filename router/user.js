@@ -11,7 +11,7 @@ router.post('/login',login);
 router.get('/get',checkAuthenticated,getUser)
 router.post('/reset', resetPassword);
 router.post('/file', checkAuthenticated,upload.single('file'),uploadFile);
-router.get('/download/file', checkAuthenticated,downloadFile)
+router.get('/download/file/:socketId', checkAuthenticated,downloadFile)
 
 // google authenticate
 router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));

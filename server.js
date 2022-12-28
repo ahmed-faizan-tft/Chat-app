@@ -70,5 +70,7 @@ const io = socketio(server, {
     },
 });
 
+socketInstance = io;
+
 
 connection(io)
